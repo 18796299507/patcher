@@ -854,6 +854,7 @@ public class ActivityStackSupervisor implements RecentTasks.Callbacks {
                         r.icicle, r.persistentState, results, newIntents,
                         dc.isNextTransitionForward(), proc.createProfilerInfoIfNeeded(),
                                 r.assistToken));
+                        com.android.server.am.PreventRunningUtils.onLaunchActivity(r.appToken);
 
                 // Set desired final state.
                 final ActivityLifecycleItem lifecycleItem;
@@ -1819,6 +1820,15 @@ public class ActivityStackSupervisor implements RecentTasks.Callbacks {
     }
 
     void cleanUpRemovedTaskLocked(TaskRecord tr, boolean killProcess, boolean removeFromRecents) {
+        try {
+            cleanUpRemovedTaskLocked$Pr(tr, killProcess, removeFromRecents);
+        } finally {
+            if (killProcess) {
+                com.android.server.am.PreventRunningUtils.onCleanUpRemovedTask(tr.getBaseIntent());
+            }
+        }
+    }
+    private void cleanUpRemovedTaskLocked$Pr(TaskRecord tr, boolean killProcess, boolean removeFromRecents) {
         if (removeFromRecents) {
             mRecentTasks.remove(tr);
         }

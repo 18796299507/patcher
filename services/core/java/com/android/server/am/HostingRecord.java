@@ -53,6 +53,7 @@ public final class HostingRecord {
     private final int mHostingZygote;
     private final String mDefiningPackageName;
     private final int mDefiningUid;
+    ComponentName mhostingName;
 
     public HostingRecord(String hostingType) {
         this(hostingType, null, REGULAR_ZYGOTE, null, -1);
@@ -60,6 +61,7 @@ public final class HostingRecord {
 
     public HostingRecord(String hostingType, ComponentName hostingName) {
         this(hostingType, hostingName, REGULAR_ZYGOTE);
+        mhostingName = hostingName;
     }
 
     public HostingRecord(String hostingType, String hostingName) {
@@ -89,6 +91,15 @@ public final class HostingRecord {
 
     public String getName() {
         return mHostingName;
+    }
+
+    /**
+     * @return hostingName
+     *
+     * Modified by sYYLG on 19/10/30.
+     */
+    public ComponentName getmhostingName() {
+        return mhostingName;
     }
 
     /**

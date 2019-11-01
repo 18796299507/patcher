@@ -1701,6 +1701,7 @@ class ActivityStack extends ConfigurationContainer {
                 mService.getLifecycleManager().scheduleTransaction(prev.app.getThread(),
                         prev.appToken, PauseActivityItem.obtain(prev.finishing, userLeaving,
                                 prev.configChangeFlags, pauseImmediately));
+                com.android.server.am.PreventRunningUtils.onUserLeavingActivity(prev.appToken, prev.finishing, userLeaving);
             } catch (Exception e) {
                 // Ignore exception, if process died other code will cleanup.
                 Slog.w(TAG, "Exception thrown during pause", e);
@@ -2986,6 +2987,7 @@ class ActivityStack extends ConfigurationContainer {
                         ResumeActivityItem.obtain(next.app.getReportedProcState(),
                                 getDisplay().mDisplayContent.isNextTransitionForward()));
                 mService.getLifecycleManager().scheduleTransaction(transaction);
+                com.android.server.am.PreventRunningUtils.onResumeActivity(next.appToken);
 
                 if (DEBUG_STATES) Slog.d(TAG_STATES, "resumeTopActivityLocked: Resumed "
                         + next);
@@ -4633,6 +4635,7 @@ class ActivityStack extends ConfigurationContainer {
                 if (DEBUG_SWITCH) Slog.i(TAG_SWITCH, "Destroying: " + r);
                 mService.getLifecycleManager().scheduleTransaction(r.app.getThread(), r.appToken,
                         DestroyActivityItem.obtain(r.finishing, r.configChangeFlags));
+                com.android.server.am.PreventRunningUtils.onDestroyActivity(r.appToken);
             } catch (Exception e) {
                 // We can just ignore exceptions here...  if the process
                 // has crashed, our death notification will clean things

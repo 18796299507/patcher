@@ -237,7 +237,7 @@ import java.util.Objects;
 /**
  * An entry in the history stack, representing an activity.
  */
-final class ActivityRecord extends ConfigurationContainer {
+public final class ActivityRecord extends ConfigurationContainer {
     private static final String TAG = TAG_WITH_CLASS_NAME ? "ActivityRecord" : TAG_ATM;
     private static final String TAG_CONFIGURATION = TAG + POSTFIX_CONFIGURATION;
     private static final String TAG_SAVED_STATE = TAG + POSTFIX_SAVED_STATE;
@@ -276,7 +276,7 @@ final class ActivityRecord extends ConfigurationContainer {
     final ComponentName mActivityComponent;  // the intent component, or target of an alias.
     final String shortComponentName; // the short component name of the intent
     final String resolvedType; // as per original caller;
-    final String packageName; // the package implementing intent's component
+    public final String packageName; // the package implementing intent's component
     final String processName; // process where this component wants to run
     final String taskAffinity; // as per ActivityInfo.taskAffinity
     final boolean stateNotNeeded; // As per ActivityInfo.flags
@@ -912,7 +912,7 @@ final class ActivityRecord extends ConfigurationContainer {
         }
     }
 
-    static @Nullable ActivityRecord forTokenLocked(IBinder token) {
+    public static @Nullable ActivityRecord forTokenLocked(IBinder token) {
         try {
             return Token.tokenToActivityRecordLocked((Token)token);
         } catch (ClassCastException e) {

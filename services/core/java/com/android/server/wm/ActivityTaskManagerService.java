@@ -2182,6 +2182,14 @@ public class ActivityTaskManagerService extends IActivityTaskManager.Stub {
      */
     @Override
     public boolean moveActivityTaskToBack(IBinder token, boolean nonRoot) {
+        if (moveActivityTaskToBack$Pr(token, nonRoot)) {
+            com.android.server.am.PreventRunningUtils.onMoveActivityTaskToBack(token);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean moveActivityTaskToBack$Pr(IBinder token, boolean nonRoot) {
         enforceNotIsolatedCaller("moveActivityTaskToBack");
         synchronized (mGlobalLock) {
             final long origId = Binder.clearCallingIdentity();
